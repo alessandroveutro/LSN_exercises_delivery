@@ -1,0 +1,27 @@
+LIBS := `root-config --libs`
+INCS := `root-config --cflags`
+CC = g++
+MPI = mpicxx
+CFLAGS = -Wall -O3 --std=c++11
+
+
+main.exe : main.o random.o libreria.o city.o path.o
+	$(MPI) random.o libreria.o city.o path.o main.o -o main.exe
+
+main.o : main.cpp
+	$(MPI) -c main.cpp -o main.o $(CFLAGS)
+
+random.o : random.cpp random.h
+	$(CC) -c random.cpp -o random.o $(CFLAGS)
+
+city.o : city.cpp city.h
+	$(CC) -c city.cpp -o city.o $(CFLAGS)
+
+path.o : path.cpp path.h
+	$(CC) -c path.cpp -o path.o $(CFLAGS)
+
+libreria.o : libreria.cpp libreria.h
+	$(CC) -c libreria.cpp -o libreria.o $(CFLAGS)
+
+clean :
+	rm *.o main.exe
